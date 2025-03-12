@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蓝牙耳机控制</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 10, 0.25);
+            border: 10px solid #111;
+        }
+        .content-wrapper {
+            height: calc(100% - 80px);
+            overflow-y: auto;
+            scrollbar-width: none;
+            padding-bottom: 20px;
+        }
+        .content-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-indicator {
+            width: 5px;
+            height: 5px;
+        }
+        .nav-indicator.active {
+            width: 20px;
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3B82F6;
+            cursor: pointer;
+        }
+        .image-gradient-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 30%, rgba(243,244,255,0) 80%);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        .headphone-image {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+            z-index: 2;
+        }
+        .glow-effect {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(239,246,255,0.8) 0%, rgba(59,130,246,0) 70%);
+            border-radius: 50%;
+            filter: blur(10px);
+        }
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-6">
+    <div class="phone-mockup bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div class="content-wrapper">
+            <!-- 状态栏 -->
+            <div class="h-10 flex justify-between items-center px-6 text-xs text-gray-700">
+                <span>9:41</span>
+                <div class="flex space-x-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/signal.svg" class="w-4 h-4" alt="Signal" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/wifi.svg" class="w-4 h-4" alt="Wifi" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/battery-medium.svg" class="w-4 h-4" alt="Battery" />
+                </div>
+            </div>
+
+            <!-- 页面标题 -->
+            <div class="px-6 py-2">
+                <h1 class="text-2xl font-bold text-blue-900">蓝牙耳机</h1>
+                <p class="text-sm text-blue-600">已连接 • 蓝牙耳机</p>
+            </div>
+
+            <!-- 耳机图片和电池状态 - 减小尺寸 -->
+            <div class="flex flex-col items-center justify-center px-4 py-2">
+                <div class="image-gradient-container">
+                    <div class="glow-effect"></div>
+                    <img src="https://images.unsplash.com/photo-1605464315542-bda3e2f4e605?q=80&w=2940&auto=format&fit=crop" 
+                         alt="蓝牙耳机" 
+                         class="headphone-image" />
+                </div>
+                
+                <!-- 电池状态指示器 -->
+                <div class="glass-card bg-white/70 rounded-full py-2 px-5 shadow-lg flex justify-center items-center mt-3">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/battery-medium.svg" class="w-5 h-5 text-yellow-600" alt="Battery" />
+                    <span class="text-sm font-medium text-gray-800 ml-2">电量: 68%</span>
+                </div>
+            </div>
+
+            <!-- 控制区域 -->
+            <div class="px-4 py-3">
+                <!-- 播放控制 -->
+                <div class="glass-card bg-white/70 rounded-2xl p-4 shadow-lg mb-4">
+                    <div class="flex justify-center items-center space-x-10 py-2">
+                        <button class="p-2 hover:bg-gray-100 rounded-full">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/skip-back.svg" class="w-7 h-7 text-gray-700" alt="Previous" />
+                        </button>
+                        <button class="p-4 bg-blue-600 hover:bg-blue-700 rounded-full">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/pause.svg" class="w-7 h-7 text-white" alt="Pause" />
+                        </button>
+                        <button class="p-2 hover:bg-gray-100 rounded-full">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/skip-forward.svg" class="w-7 h-7 text-gray-700" alt="Next" />
+                        </button>
+                    </div>
+                    
+                    <!-- 当前播放信息 -->
+                    <div class="text-center my-3">
+                        <h3 class="text-lg font-semibold text-gray-800">Blinding Lights</h3>
+                        <p class="text-sm text-gray-500">The Weeknd</p>
+                    </div>
+                    
+                    <!-- 音量控制 -->
+                    <div class="flex items-center space-x-3 mt-3">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/volume-1.svg" class="w-5 h-5 text-gray-500" alt="Volume Low" />
+                        <input type="range" class="w-full h-2 bg-blue-200 rounded-lg appearance-none volume-slider" min="0" max="100" value="75">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/volume-2.svg" class="w-5 h-5 text-gray-700" alt="Volume High" />
+                    </div>
+                </div>
+                
+                <!-- 基本功能控制 - 修改为更紧凑的布局 -->
+                <div class="glass-card bg-white/70 rounded-2xl p-4 shadow-lg mb-4">
+                    <h3 class="font-semibold text-gray-800 mb-3">通用控制</h3>
+                    
+                    <div class="control-grid">
+                        <div class="control-item">
+                            <div class="bg-blue-100 p-2 rounded-xl">
+                                <img src="https://unpkg.com/lucide-static@latest/icons/phone-call.svg" class="w-5 h-5 text-blue-600" alt="Call" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-sm text-gray-800">接听电话</h3>
+                                <p class="text-xs text-gray-500">双击右耳</p>
+                            </div>
+                        </div>
+                        
+                        <div class="control-item">
+                            <div class="bg-red-100 p-2 rounded-xl">
+                                <img src="https://unpkg.com/lucide-static@latest/icons/phone-off.svg" class="w-5 h-5 text-red-600" alt="End Call" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-sm text-gray-800">挂断电话</h3>
+                                <p class="text-xs text-gray-500">长按右耳</p>
+                            </div>
+                        </div>
+                        
+                        <div class="control-item">
+                            <div class="bg-green-100 p-2 rounded-xl">
+                                <img src="https://unpkg.com/lucide-static@latest/icons/play.svg" class="w-5 h-5 text-green-600" alt="Play" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-sm text-gray-800">播放/暂停</h3>
+                                <p class="text-xs text-gray-500">单击右耳</p>
+                            </div>
+                        </div>
+                        
+                        <div class="control-item">
+                            <div class="bg-purple-100 p-2 rounded-xl">
+                                <img src="https://unpkg.com/lucide-static@latest/icons/skip-forward.svg" class="w-5 h-5 text-purple-600" alt="Next" />
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-sm text-gray-800">下一曲</h3>
+                                <p class="text-xs text-gray-500">双击左耳</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 设备信息 - 更紧凑布局 -->
+                <div class="glass-card bg-white/70 rounded-2xl p-4 shadow-lg">
+                    <h3 class="font-semibold text-gray-800 mb-3">设备信息</h3>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <div class="bg-blue-100 p-1.5 rounded-full">
+                                    <img src="https://unpkg.com/lucide-static@latest/icons/info.svg" class="w-4 h-4 text-blue-600" alt="Device Name" />
+                                </div>
+                                <span class="text-sm text-gray-700">设备名称</span>
+                            </div>
+                            <span class="text-sm text-gray-500">蓝牙耳机 TWS</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <div class="bg-blue-100 p-1.5 rounded-full">
+                                    <img src="https://unpkg.com/lucide-static@latest/icons/cpu.svg" class="w-4 h-4 text-blue-600" alt="Model" />
+                                </div>
+                                <span class="text-sm text-gray-700">型号</span>
+                            </div>
+                            <span class="text-sm text-gray-500">BT-500</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <div class="bg-blue-100 p-1.5 rounded-full">
+                                    <img src="https://unpkg.com/lucide-static@latest/icons/bluetooth.svg" class="w-4 h-4 text-blue-600" alt="Bluetooth" />
+                                </div>
+                                <span class="text-sm text-gray-700">蓝牙版本</span>
+                            </div>
+                            <span class="text-sm text-gray-500">5.2</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <div class="bg-blue-100 p-1.5 rounded-full">
+                                    <img src="https://unpkg.com/lucide-static@latest/icons/clock.svg" class="w-4 h-4 text-blue-600" alt="Usage" />
+                                </div>
+                                <span class="text-sm text-gray-700">使用时长</span>
+                            </div>
+                            <span class="text-sm text-gray-500">3小时27分钟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部导航 - 修改为固定位置 -->
+        <div class="bottom-nav">
+            <div class="glass-card bg-white/80 w-[300px] px-4 py-3 rounded-full shadow-lg border border-gray-200 flex justify-between items-center">
+                <div class="flex flex-col items-center px-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/headphones.svg" class="w-6 h-6 text-blue-600" alt="Devices" />
+                    <div class="nav-indicator active bg-blue-600 rounded-full mt-1 transition-all"></div>
+                </div>
+                <div class="flex flex-col items-center px-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/languages.svg" class="w-6 h-6 text-gray-400" alt="Translation" />
+                    <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                </div>
+                <div class="flex flex-col items-center px-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-6 h-6 text-gray-400" alt="AI Chat" />
+                    <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                </div>
+                <div class="flex flex-col items-center px-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="w-6 h-6 text-gray-400" alt="Profile" />
+                    <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

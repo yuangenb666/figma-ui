@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI对话</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            overflow-y: auto;
+            position: relative;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 10, 0.25);
+            border: 10px solid #111;
+        }
+        .content-wrapper {
+            padding-bottom: 0; /* 移除底部填充 */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-indicator {
+            width: 5px;
+            height: 5px;
+        }
+        .nav-indicator.active {
+            width: 20px;
+        }
+        .chat-container {
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .typing-indicator span {
+            animation: typingAnimation 1.5s infinite ease-in-out;
+            background-color: #6366F1;
+            border-radius: 50%;
+            display: inline-block;
+            height: 6px;
+            margin-right: 4px;
+            width: 6px;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typingAnimation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+        .input-container {
+            position: absolute;
+            bottom: 80px; /* 定位在导航栏正上方 */
+            left: 0;
+            right: 0;
+            padding: 0 24px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-6">
+    <div class="phone-mockup bg-gradient-to-b from-white to-purple-50">
+        <div class="content-wrapper">
+            <!-- 状态栏 -->
+            <div class="h-10 flex justify-between items-center px-6 text-xs text-gray-700">
+                <span>9:41</span>
+                <div class="flex space-x-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/signal.svg" class="w-4 h-4" alt="Signal" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/wifi.svg" class="w-4 h-4" alt="Wifi" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/battery-medium.svg" class="w-4 h-4" alt="Battery" />
+                </div>
+            </div>
+
+            <!-- 页面标题 -->
+            <div class="px-6 py-2 flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-800">AI对话</h1>
+                <button class="bg-purple-100 p-2 rounded-full">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/refresh-cw.svg" class="w-5 h-5 text-purple-600" alt="Reset" />
+                </button>
+            </div>
+
+            <!-- 聊天区域 -->
+            <div class="chat-container px-4 pt-2 pb-4">
+                <!-- AI消息 -->
+                <div class="flex mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 flex-shrink-0 flex items-center justify-center">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-5 h-5 text-white" alt="AI" />
+                    </div>
+                    <div class="ml-2 bg-white rounded-2xl rounded-tl-none px-4 py-2 shadow-sm max-w-[85%]">
+                        <p class="text-gray-700">您好！我是您的AI助手。请问有什么可以帮助您的吗？</p>
+                    </div>
+                </div>
+
+                <!-- 用户消息 -->
+                <div class="flex justify-end mb-4">
+                    <div class="mr-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl rounded-tr-none px-4 py-2 shadow-sm max-w-[85%]">
+                        <p class="text-white">你能简单介绍一下自己的功能吗？</p>
+                    </div>
+                    <div class="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="w-5 h-5 text-gray-500" alt="User" />
+                    </div>
+                </div>
+
+                <!-- AI消息 -->
+                <div class="flex mb-4">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-400 to-indigo-500 flex-shrink-0 flex items-center justify-center">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-5 h-5 text-white" alt="AI" />
+                    </div>
+                    <div class="ml-2 bg-white rounded-2xl rounded-tl-none px-4 py-2 shadow-sm max-w-[85%]">
+                        <p class="text-gray-700">当然！我是一个AI助手，可以：</p>
+                        <ul class="list-disc pl-5 mt-1 text-gray-700">
+                            <li>回答您的问题和提供信息</li>
+                            <li>协助您写作和编辑文本</li>
+                            <li>提供建议和解决问题</li>
+                            <li>简单地与您聊天交流</li>
+                        </ul>
+                        <p class="text-gray-700 mt-1">有什么具体的问题需要我帮忙解答吗？</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部输入区域 - 调整位置更靠近导航栏 -->
+            <div class="input-container">
+                <div class="flex items-center">
+                    <div class="flex-1 bg-white rounded-xl border border-gray-200 flex items-center pr-2 shadow-md">
+                        <input type="text" placeholder="请输入问题..." class="flex-1 py-2 px-3 bg-transparent focus:outline-none text-sm" />
+                        <button class="p-1 text-gray-400">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/mic.svg" class="w-5 h-5" alt="Voice" />
+                        </button>
+                    </div>
+                    <button class="ml-2 p-2 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full shadow-md">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/send.svg" class="w-5 h-5 text-white" alt="Send" />
+                    </button>
+                </div>
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="bottom-nav">
+                <div class="glass-card bg-white/80 w-[300px] px-4 py-3 rounded-full shadow-lg border border-gray-200 flex justify-between items-center">
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/headphones.svg" class="w-6 h-6 text-gray-400" alt="Devices" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/languages.svg" class="w-6 h-6 text-gray-400" alt="Translation" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-6 h-6 text-purple-600" alt="AI Chat" />
+                        <div class="nav-indicator active bg-purple-600 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="w-6 h-6 text-gray-400" alt="Profile" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

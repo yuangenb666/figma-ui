@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人中心</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            overflow-y: auto;
+            position: relative;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 10, 0.25);
+            border: 10px solid #111;
+        }
+        .content-wrapper {
+            padding-bottom: 0; /* 移除底部填充 */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-indicator {
+            width: 5px;
+            height: 5px;
+        }
+        .nav-indicator.active {
+            width: 20px;
+        }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-6">
+    <div class="phone-mockup bg-gradient-to-b from-white to-gray-50">
+        <div class="content-wrapper">
+            <!-- 状态栏 -->
+            <div class="h-10 flex justify-between items-center px-6 text-xs text-gray-700">
+                <span>9:41</span>
+                <div class="flex space-x-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/signal.svg" class="w-4 h-4" alt="Signal" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/wifi.svg" class="w-4 h-4" alt="Wifi" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/battery-medium.svg" class="w-4 h-4" alt="Battery" />
+                </div>
+            </div>
+
+            <!-- 用户信息区域 -->
+            <div class="px-6 py-4 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-b-3xl">
+                <div class="flex items-center">
+                    <div class="w-14 h-14 rounded-full bg-white p-1 mr-4">
+                        <div class="w-full h-full rounded-full bg-gradient-to-r from-gray-300 to-gray-400 flex items-center justify-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="w-7 h-7 text-white" alt="User" />
+                        </div>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-200">激活码</p>
+                        <h2 class="text-base font-medium">ABC**12**XYZ</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 使用统计 -->
+            <div class="px-6 py-4">
+                <div class="glass-card bg-white/90 rounded-2xl p-4 shadow-lg">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3">使用统计</h3>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bg-gray-50 p-3 rounded-xl text-center">
+                            <div class="text-xl font-bold text-indigo-600">128</div>
+                            <div class="text-xs text-gray-500 mt-1">翻译次数</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-xl text-center">
+                            <div class="text-xl font-bold text-purple-600">85</div>
+                            <div class="text-xs text-gray-500 mt-1">AI对话次数</div>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-xl text-center">
+                            <div class="text-xl font-bold text-green-600">42:15</div>
+                            <div class="text-xs text-gray-500 mt-1">使用时长</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 激活码 -->
+            <div class="px-6 py-2">
+                <div class="glass-card bg-white/90 rounded-2xl p-4 shadow-lg">
+                    <h3 class="text-base font-semibold text-gray-800">会员状态</h3>
+                    
+                    <div class="bg-gray-50 rounded-xl p-3 mt-3 border border-dashed border-gray-300">
+                        <div class="flex items-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/ticket.svg" class="w-5 h-5 text-gray-500 mr-2" alt="Activation Code" />
+                            <div class="text-sm text-gray-500">标准版会员</div>
+                            <button class="ml-auto text-xs text-indigo-600">详情</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 功能入口 -->
+            <div class="px-6 py-2">
+                <div class="glass-card bg-white/90 rounded-2xl p-2 shadow-lg">
+                    <div class="divide-y divide-gray-100">
+                        <div class="flex items-center p-3">
+                            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                                <img src="https://unpkg.com/lucide-static@latest/icons/shield.svg" class="w-4 h-4 text-purple-600" alt="Privacy" />
+                            </div>
+                            <span class="text-gray-700">隐私协议</span>
+                            <img src="https://unpkg.com/lucide-static@latest/icons/chevron-right.svg" class="w-5 h-5 text-gray-400 ml-auto" alt="Next" />
+                        </div>
+                        
+                        <div class="flex items-center p-3">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <img src="https://unpkg.com/lucide-static@latest/icons/info.svg" class="w-4 h-4 text-blue-600" alt="About" />
+                            </div>
+                            <span class="text-gray-700">关于我们</span>
+                            <img src="https://unpkg.com/lucide-static@latest/icons/chevron-right.svg" class="w-5 h-5 text-gray-400 ml-auto" alt="Next" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 退出登录 -->
+            <div class="px-6 py-4">
+                <button class="w-full py-3 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl font-medium">
+                    退出登录
+                </button>
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="bottom-nav">
+                <div class="glass-card bg-white/80 w-[300px] px-4 py-3 rounded-full shadow-lg border border-gray-200 flex justify-between items-center">
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/headphones.svg" class="w-6 h-6 text-gray-400" alt="Devices" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/languages.svg" class="w-6 h-6 text-gray-400" alt="Translation" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-6 h-6 text-gray-400" alt="AI Chat" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="w-6 h-6 text-gray-700" alt="Profile" />
+                        <div class="nav-indicator active bg-gray-700 rounded-full mt-1 transition-all"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

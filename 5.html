@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoSphere - 激活码登录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            overflow-y: auto;
+            position: relative;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 10, 0.25);
+            border: 10px solid #111;
+        }
+        .content-wrapper {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .activation-input:focus {
+            outline: none;
+            border-color: #8B5CF6;
+        }
+        .activation-input {
+            letter-spacing: 0.5em;
+            font-weight: 600;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #EC4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(139, 92, 246, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+            }
+        }
+        .floating-animation {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-6">
+    <div class="phone-mockup bg-gradient-to-b from-indigo-50 via-purple-50 to-pink-50">
+        <div class="content-wrapper">
+            <!-- 状态栏 -->
+            <div class="h-10 flex justify-between items-center px-6 text-xs text-gray-700">
+                <span>9:41</span>
+                <div class="flex space-x-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/signal.svg" class="w-4 h-4" alt="Signal" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/wifi.svg" class="w-4 h-4" alt="Wifi" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/battery-medium.svg" class="w-4 h-4" alt="Battery" />
+                </div>
+            </div>
+
+            <!-- 主要内容区域 -->
+            <div class="flex-1 flex flex-col items-center justify-center px-8">
+                <!-- 应用图标和名称 -->
+                <div class="mb-8 text-center">
+                    <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 mx-auto mb-4 flex items-center justify-center shadow-lg floating-animation">
+                        <div class="w-12 h-12 rounded-full bg-white/30 flex items-center justify-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/zap.svg" class="w-8 h-8 text-white" alt="Logo" />
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold gradient-text">EchoSphere</h1>
+                    <p class="text-gray-500 mt-2">智能语音与翻译助手</p>
+                </div>
+
+                <!-- 激活码输入区域 -->
+                <div class="glass-card bg-white/80 rounded-3xl p-6 shadow-lg w-full mb-8">
+                    <h2 class="text-xl font-semibold text-gray-800 mb-4">欢迎使用</h2>
+                    <p class="text-gray-600 mb-6">请输入您的激活码以开始使用全部功能</p>
+                    
+                    <div class="mb-6">
+                        <label for="activation-code" class="block text-sm font-medium text-gray-700 mb-2">激活码</label>
+                        <input 
+                            type="text" 
+                            id="activation-code" 
+                            class="activation-input w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-xl text-center text-lg text-gray-800"
+                            placeholder="XXXX-XXXX-XXXX"
+                            maxlength="14"
+                        />
+                    </div>
+                    
+                    <button class="w-full py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white rounded-xl font-medium shadow-md hover:shadow-lg transition-all pulse-animation">
+                        激活并登录
+                    </button>
+                </div>
+
+                <!-- 应用描述 -->
+                <div class="text-center mb-8 px-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2">突破语言障碍，连接世界</h3>
+                    <p class="text-gray-600 text-sm">
+                        EchoSphere 集成了先进的AI语音识别、实时翻译和智能对话功能，让您在全球交流中畅通无阻。无论是旅行、学习还是商务，都能为您提供专业的语言支持。
+                    </p>
+                </div>
+
+                <!-- 功能亮点 -->
+                <div class="grid grid-cols-3 gap-4 w-full px-4">
+                    <div class="text-center">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 mx-auto mb-2 flex items-center justify-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/languages.svg" class="w-6 h-6 text-indigo-600" alt="Translation" />
+                        </div>
+                        <p class="text-xs text-gray-700">实时翻译</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 rounded-full bg-purple-100 mx-auto mb-2 flex items-center justify-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-6 h-6 text-purple-600" alt="AI" />
+                        </div>
+                        <p class="text-xs text-gray-700">AI对话</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-12 h-12 rounded-full bg-pink-100 mx-auto mb-2 flex items-center justify-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/headphones.svg" class="w-6 h-6 text-pink-600" alt="Audio" />
+                        </div>
+                        <p class="text-xs text-gray-700">语音识别</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部版权信息 -->
+            <div class="py-4 text-center">
+                <p class="text-xs text-gray-500">© 2023 EchoSphere Technology</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

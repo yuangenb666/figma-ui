@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>同声传译</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .phone-mockup {
+            width: 375px;
+            height: 812px;
+            overflow-y: auto;
+            position: relative;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 10, 0.25);
+            border: 10px solid #111;
+        }
+        .content-wrapper {
+            padding-bottom: 0; /* Changed from 70px to remove the gap */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .glass-card {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .nav-indicator {
+            width: 5px;
+            height: 5px;
+        }
+        .nav-indicator.active {
+            width: 20px;
+        }
+        .wave-bar {
+            width: 2px;
+            background-color: #fff;
+            border-radius: 3px;
+            animation: sound-wave 1.5s infinite ease-in-out;
+        }
+        .wave-bar:nth-child(2n) { animation-delay: 0.2s; }
+        .wave-bar:nth-child(3n) { animation-delay: 0.4s; }
+        .wave-bar:nth-child(4n) { animation-delay: 0.6s; }
+        .wave-bar:nth-child(5n) { animation-delay: 0.8s; }
+        @keyframes sound-wave {
+            0%, 100% { height: 3px; }
+            50% { height: 12px; }
+        }
+        .wave-container {
+            display: flex;
+            align-items: center;
+            height: 24px;
+            gap: 2px;
+            justify-content: center;
+        }
+        .recording-button {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .recording-button:hover {
+            transform: scale(1.05);
+        }
+        #recording-active, #recording-inactive {
+            transition: opacity 0.3s ease;
+        }
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+        .controls-container {
+            position: absolute;
+            bottom: 80px; /* Position right above the navigation bar */
+            left: 0;
+            right: 0;
+            padding: 0 24px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen p-6">
+    <div class="phone-mockup bg-gradient-to-b from-white to-indigo-50">
+        <div class="content-wrapper">
+            <!-- 状态栏 -->
+            <div class="h-10 flex justify-between items-center px-6 text-xs text-gray-700">
+                <span>9:41</span>
+                <div class="flex space-x-2">
+                    <img src="https://unpkg.com/lucide-static@latest/icons/signal.svg" class="w-4 h-4" alt="Signal" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/wifi.svg" class="w-4 h-4" alt="Wifi" />
+                    <img src="https://unpkg.com/lucide-static@latest/icons/battery-medium.svg" class="w-4 h-4" alt="Battery" />
+                </div>
+            </div>
+
+            <!-- 页面标题 -->
+            <div class="px-6 py-2">
+                <h1 class="text-xl font-bold text-gray-800">语音翻译助手</h1>
+            </div>
+
+            <!-- 主要翻译卡片 -->
+            <div class="px-6 flex-1 flex flex-col">
+                <!-- 翻译示例 -->
+                <div class="mb-2">
+                    <div class="bg-white rounded-2xl p-3 shadow-md mb-2">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-medium text-indigo-600 px-2 py-0.5 bg-indigo-50 rounded-full">中文</span>
+                            <img src="https://unpkg.com/lucide-static@latest/icons/volume-2.svg" class="w-4 h-4 text-gray-400" alt="Play" />
+                        </div>
+                        <p class="text-gray-800">你好，我想预订一张去北京的机票。</p>
+                    </div>
+                    
+                    <div class="bg-indigo-50 rounded-2xl p-3 shadow-md">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-medium text-indigo-600 px-2 py-0.5 bg-white rounded-full">英语</span>
+                            <img src="https://unpkg.com/lucide-static@latest/icons/volume-2.svg" class="w-4 h-4 text-gray-400" alt="Play" />
+                        </div>
+                        <p class="text-gray-800">Hello, I would like to book a flight to Beijing.</p>
+                    </div>
+                </div>
+
+                <!-- 空白填充，自动占用剩余空间 -->
+                <div class="flex-1"></div>
+            </div>
+
+            <!-- 控制区域 - 录音和语言选择 - 移到导航栏上方 -->
+            <div class="controls-container">
+                <!-- 录音状态区域 -->
+                <div class="flex justify-center mb-4">
+                    <!-- 录音中状态 - 显示波形 -->
+                    <div id="recording-active" class="recording-button bg-gradient-to-r from-blue-500 to-purple-500 rounded-full p-3 shadow-md flex items-center justify-center w-16 h-16">
+                        <div class="wave-container">
+                            <div class="wave-bar h-2"></div>
+                            <div class="wave-bar h-4"></div>
+                            <div class="wave-bar h-2"></div>
+                            <div class="wave-bar h-5"></div>
+                            <div class="wave-bar h-3"></div>
+                            <div class="wave-bar h-4"></div>
+                            <div class="wave-bar h-2"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 未录音状态 - 显示开始录音按钮 -->
+                    <div id="recording-inactive" class="recording-button bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full p-3 shadow-md flex items-center justify-center w-16 h-16 hidden">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/mic.svg" class="w-7 h-7 text-white" alt="Microphone" />
+                    </div>
+                </div>
+
+                <!-- 语言选择按钮 -->
+                <div class="grid grid-cols-2 gap-4 mb-0"> <!-- 移除底部边距 -->
+                    <button class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-2.5 px-4 rounded-xl shadow-md flex items-center justify-center">
+                        <span class="mr-2">中文</span>
+                        <img src="https://unpkg.com/lucide-static@latest/icons/chevron-down.svg" class="w-4 h-4" alt="Down" />
+                    </button>
+                    <button class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white py-2.5 px-4 rounded-xl shadow-md flex items-center justify-center">
+                        <span class="mr-2">英语</span>
+                        <img src="https://unpkg.com/lucide-static@latest/icons/chevron-down.svg" class="w-4 h-4" alt="Down" />
+                    </button>
+                </div>
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="bottom-nav">
+                <div class="glass-card bg-white/80 w-[300px] px-4 py-3 rounded-full shadow-lg border border-gray-200 flex justify-between items-center">
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/headphones.svg" class="w-6 h-6 text-gray-400" alt="Devices" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/languages.svg" class="w-6 h-6 text-indigo-600" alt="Translation" />
+                        <div class="nav-indicator active bg-indigo-600 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/bot.svg" class="w-6 h-6 text-gray-400" alt="AI Chat" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                    <div class="flex flex-col items-center px-2">
+                        <img src="https://unpkg.com/lucide-static@latest/icons/user.svg" class="w-6 h-6 text-gray-400" alt="Profile" />
+                        <div class="nav-indicator bg-gray-300 rounded-full mt-1 transition-all"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 简单的交互脚本 -->
+    <script>
+        const activeRecording = document.getElementById('recording-active');
+        const inactiveRecording = document.getElementById('recording-inactive');
+        
+        // 切换录音状态
+        activeRecording.addEventListener('click', function() {
+            activeRecording.classList.add('hidden');
+            inactiveRecording.classList.remove('hidden');
+        });
+        
+        inactiveRecording.addEventListener('click', function() {
+            inactiveRecording.classList.add('hidden');
+            activeRecording.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
